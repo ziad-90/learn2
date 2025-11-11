@@ -1,0 +1,14 @@
+{
+  "name": "online-medicine-shopping",
+  "version": "1.0.0",
+  "description": "An online platform for purchasing medicines",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "keywords": [],
+  "author": "ziad-90",
+  "license": "ISC"
+}
