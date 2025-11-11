@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const helmet = require('helmet');
 const connectDB = require('./config/db');
+const { apiLimiter } = require('./middleware/rateLimiter');
 
 // Load env vars
 dotenv.config();
@@ -26,6 +27,9 @@ app.use(cors());
 
 // Set security headers
 app.use(helmet());
+
+// Apply general rate limiting to all API routes
+app.use('/api/', apiLimiter);
 
 // Mount routers
 app.use('/api/auth', authRoutes);

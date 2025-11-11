@@ -9,15 +9,17 @@ const {
   getCategories
 } = require('../controllers/medicineController');
 const { protect, admin } = require('../middleware/auth');
+const { apiLimiter } = require('../middleware/rateLimiter');
+const { medicineValidation, mongoIdValidation, validate } = require('../middleware/validation');
 
 router.get('/categories', getCategories);
 router.route('/')
   .get(getMedicines)
-  .post(protect, admin, createMedicine);
+  .post(protect, admin, apiLimiter, medicineValidation, validate, createMedicine);
 
 router.route('/:id')
-  .get(getMedicine)
-  .put(protect, admin, updateMedicine)
-  .delete(protect, admin, deleteMedicine);
+  .get(mongoIdValidation, validate, getMedicine)
+  .put(protect, admin, apiLimiter, mongoIdValidation, medicineValidation, validate, updateMedicine)
+  .delete(protect, admin, apiLimiter, mongoIdValidation, validate, deleteMedicine);
 
 module.exports = router;

@@ -8,14 +8,16 @@ const {
   clearCart
 } = require('../controllers/cartController');
 const { protect } = require('../middleware/auth');
+const { cartLimiter } = require('../middleware/rateLimiter');
+const { cartItemValidation, mongoIdValidation, validate } = require('../middleware/validation');
 
 router.route('/')
   .get(protect, getCart)
-  .post(protect, addToCart)
+  .post(protect, cartLimiter, cartItemValidation, validate, addToCart)
   .delete(protect, clearCart);
 
 router.route('/:itemId')
-  .put(protect, updateCartItem)
-  .delete(protect, removeFromCart);
+  .put(protect, cartLimiter, mongoIdValidation, validate, updateCartItem)
+  .delete(protect, mongoIdValidation, validate, removeFromCart);
 
 module.exports = router;

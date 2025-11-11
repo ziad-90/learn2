@@ -7,9 +7,11 @@ const {
   updateDetails
 } = require('../controllers/authController');
 const { protect } = require('../middleware/auth');
+const { authLimiter } = require('../middleware/rateLimiter');
+const { registerValidation, loginValidation, validate } = require('../middleware/validation');
 
-router.post('/register', register);
-router.post('/login', login);
+router.post('/register', authLimiter, registerValidation, validate, register);
+router.post('/login', authLimiter, loginValidation, validate, login);
 router.get('/me', protect, getMe);
 router.put('/updatedetails', protect, updateDetails);
 
